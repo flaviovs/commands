@@ -13,12 +13,13 @@ You'll act as the orchestrator to coordinate the execution of all steps of the p
 
 ## Pre-flight Checklist
 
-- Check for a plan $ARGUMENTS in `.plans/`. If none or more than one plan matches, inform the use and stop.
-  **Do not proceed if you're unsure of which plan the user wants.**
+- Check for a plan $ARGUMENTS in `.plans/`. If none or more than one plan matches, inform the use and stop. AGENT**Do not proceed if you're unsure of which plan the user wants.**
 - Apply project-specific instructions for saved plan execution; those take precedence over conflicting instructions presented here.
 
+Notes:
 
-Note: your glob and read tools might not be able to find plans in `.plans/`. You must fallback to OS tools (`ls`, `find`, etc.) for files in `.plans/`.
+- Your glob and read tools might not be able to find plans in `.plans/`. You must fallback to OS tools (`ls`, `find`, etc.) for files in `.plans/`.
+- `.plans/` if often not tracked on Git.
 
 ---
 
@@ -36,16 +37,19 @@ In the plan directory:
 
 Follow this orchestration workflow:
 
-- Read `PLAN.md`.
-- Read `TODO.md`.
-- Read the `Goal` section and identify the overall objective, project-wide instructions, constraints, and completion criteria.
+- Read `PLAN.md` and identify its goals, requirements, constraints, and acceptance criteria.
+- Read `TODO.md` to map dependencies between work items and identify useful context recorded in one item that may be needed for another.
 - Process every unchecked execution-checklist item sequentially, from top to bottom.
 - Never execute multiple checklist items concurrently.
 - For each unchecked item:
   - Identify the change file referenced by the item.
   - Delegate the item to a subagent.
   - Instruct the subagent to read the referenced change file in full and implement everything it requires.
-  - Pass only context the subagent cannot discover from that change file, applicable goals and requirements from `TODO.md`, from `AGENTS.md`, relevant state or decisions produced by earlier checklist items, and any additional orchestration constraints required for correct execution.
+  - Pass only context the subagent cannot discover from that change file:
+    - Applicable goals and requirements from `PLAN.md` and project-wide instructions.
+    - Relevant state or decisions from earlier checklist items.
+    - Additional orchestration constraints, if any.
+    - Any context from other `TODO.md` items that is relevant to execute the task.
   - Do not duplicate requirements or implementation details that the subagent can obtain by reading the change file.
   - Instruct the subagent to perform all validation required by the change file and applicable project-wide completion criteria.
   - Wait for the subagent to finish before proceeding.
@@ -53,22 +57,27 @@ Follow this orchestration workflow:
   - If the item is incomplete or validation fails, delegate corrective work and repeat verification. Do not advance until the current item is complete.
   - Only after verifying all applicable completion criteria, mark the item completed in `TODO.md`.
 - Repeat until every execution-checklist item is completed.
-- After all items are complete, perform final project-wide validation against the `Goal` and all project completion criteria.
+- After all items are complete, perform final project-wide validation against the plan's goals, requirements, constraints, and acceptance criteria.
 
 ---
 
-## Strict Requirements
+## Strict Rules
 
-- You are responsible for orchestration, sequencing, context propagation, review, and final verification.
-- Delegate implementation work to subagents. Do not replace delegation by implementing checklist items yourself.
+You must:
+
+- Own orchestration, sequencing, context propagation, review, and final verification.
+- Delegate implementation work to subagents.
 - Process checklist items strictly sequentially and in document order.
-- Do not begin a later item while an earlier item remains incomplete.
-- Each subagent must read its referenced change file itself.
-- Do not unnecessarily copy or summarize information already available in the change file into the delegation prompt.
-- Do pass any relevant information that is not available from the change file and that the subagent needs to execute correctly.
-- Never assume a subagent has access to another subagent's conversation or conclusions; explicitly pass relevant cross-item state when necessary.
-- Completion requires validation, not merely implementation.
-- Do not weaken, remove, bypass, or alter requirements, tests, or completion criteria merely to make validation pass.
-- Never mark an item complete while any applicable criterion is unmet or unverified.
-- If an item cannot be completed or validated, stop the sequence, leave it unchecked, and report the blocker. Do not continue with subsequent items.
-- Do not declare the changeset complete until every checklist item is checked, all acceptance criteria are met, and final project-wide validation passes.
+- Require each subagent to read its referenced change file itself.
+- Pass relevant context the subagent cannot obtain from the change file, including cross-item state when necessary.
+- Validate completion; implementation alone is insufficient.
+- If an item cannot be completed or validated, stop the sequence, leave it unchecked, and report the blocker.
+
+You must not:
+
+- Implement checklist items yourself instead of delegating them.
+- Copy or summarize information already available in the change file into the delegation prompt unnecessarily.
+- Assume a subagent has access to another subagent's conversation or conclusions.
+- Weaken, remove, bypass, or alter requirements, tests, or completion criteria merely to make validation pass.
+- Mark an item complete while any applicable criterion is unmet or unverified.
+- Declare the changeset complete until every checklist item is checked, all acceptance criteria are met, and final project-wide validation passes.
