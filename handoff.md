@@ -10,6 +10,7 @@ You must:
 - Reference content by relative path or URL instead.
 - Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
 - Include required tasks os steps still not executed.
+- Ensure you reply with the **full absolute path** of the document.
 
 You must not:
 
