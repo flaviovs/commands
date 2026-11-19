@@ -1,6 +1,5 @@
 ---
 description: Save a plan
-agent: build
 ---
 
 Save this plan so that a fresh AI agent can execute all the tasks to complete it.
