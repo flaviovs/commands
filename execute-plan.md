@@ -34,30 +34,39 @@ In the plan directory:
 
 ## Workflow
 
-Follow this orchestration workflow:
+Follow these steps in order:
 
-- Read `PLAN.md` and identify its goals, requirements, constraints, and acceptance criteria.
-- Read `TODO.md` to map dependencies between work items and identify useful context recorded in one item that may be needed for another.
-- Process every unchecked execution-checklist item sequentially, from top to bottom.
-- Never execute multiple checklist items concurrently.
-- For each unchecked item:
-  - Identify the change file referenced by the item.
-  - Delegate the item to a subagent.
-  - Instruct the subagent to read the referenced change file in full and implement everything it requires.
-  - Pass only context the subagent cannot discover from that change file:
-    - Applicable goals and requirements from `PLAN.md` and project-wide instructions.
-    - Relevant state or decisions from earlier checklist items.
-    - Additional orchestration constraints, if any.
-    - Any context from other `TODO.md` items that is relevant to execute the task.
-  - Do not duplicate requirements or implementation details that the subagent can obtain by reading the change file.
-  - Instruct the subagent to perform all validation required by the change file and applicable project-wide completion criteria.
-  - Wait for the subagent to finish before proceeding.
-  - Review the resulting changes and validation results.
-  - If the item is incomplete or validation fails, delegate corrective work and repeat verification. Do not advance until the current item is complete.
-  - Only after verifying all applicable completion criteria, mark the item completed in `TODO.md`.
-- Repeat until every execution-checklist item is completed.
-- After all items are complete, perform final project-wide validation against the plan's goals, requirements, constraints, and acceptance criteria.
-- After validation passes, rename `.plans/{plan-slug}/` to `.plans/.DONE.{plan-slug}/`.
+1. **Prepare the execution context.**
+   - Read `PLAN.md` and identify its goals, requirements, constraints, and acceptance criteria.
+   - Read `TODO.md` to map dependencies between work items and identify useful context recorded in one item that may be needed for another.
+
+2. **Select the next item.**
+   - Process unchecked execution-checklist items sequentially, from top to bottom.
+   - Never execute multiple checklist items concurrently.
+
+3. **Delegate implementation of the item.**
+   - Identify the change file referenced by the item.
+   - Delegate the item to a subagent and instruct it to read the referenced change file in full and implement everything it requires.
+   - Pass only context the subagent cannot discover from that change file:
+     - Applicable goals and requirements from `PLAN.md` and project-wide instructions.
+     - Relevant state or decisions from earlier checklist items.
+     - Additional orchestration constraints, if any.
+     - Any context from other `TODO.md` items that is relevant to execute the task.
+   - Do not duplicate requirements or implementation details that the subagent can obtain by reading the change file.
+
+4. **Validate and review the item.**
+   - Delegate to another subagent the task of performing all validation required by the change file and applicable project-wide completion criteria, and reviewing the resulting changes and validation results.
+   - If the item is incomplete or validation fails, delegate corrective work and repeat verification. Do not advance until the current item is complete.
+
+5. **Record completion.**
+   - Only after verifying all applicable completion criteria, mark the item completed in `TODO.md`.
+
+6. **Repeat.**
+   - Return to step 2 and continue until every execution-checklist item is completed.
+
+7. **Perform final validation and close the plan.**
+   - After all items are complete, perform final project-wide validation against the plan's goals, requirements, constraints, and acceptance criteria.
+   - After validation passes, rename `.plans/{plan-slug}/` to `.plans/.DONE.{plan-slug}/`.
 
 ---
 
