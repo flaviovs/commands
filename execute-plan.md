@@ -66,7 +66,7 @@ Follow these steps in order:
 
 7. **Perform final validation and close the plan.**
    - After all items are complete, perform final project-wide validation against the plan's goals, requirements, constraints, and acceptance criteria.
-   - After validation passes, rename `.plans/{plan-slug}/` to `.plans/.DONE.{plan-slug}/`.
+   - After validation passes, move `.plans/{plan-slug}/` to `.plans/.done/{plan-slug}/`.
 
 ---
 
@@ -81,7 +81,7 @@ You must:
 - Pass relevant context the subagent cannot obtain from the change file, including cross-item state when necessary.
 - Validate completion; implementation alone is insufficient.
 - If an item cannot be completed or validated, stop the sequence, leave it unchecked, and report the blocker.
-- Rename the plan directory with the `.DONE.` prefix only after every checklist item is complete and final project-wide validation passes.
+- Move the plan directory to `.plans/.done/{plan-slug}/` only after every checklist item is complete and final project-wide validation passes.
 
 You must not:
 
