@@ -12,7 +12,7 @@ You'll act as the orchestrator to coordinate the execution of all steps of the p
 
 ## Pre-flight Checklist
 
-- Check for a plan $ARGUMENTS in `.plans/`. If none or more than one plan matches, inform the use and stop. AGENT**Do not proceed if you're unsure of which plan the user wants.**
+- Check for a plan $ARGUMENTS in `.plans/`. If none or more than one plan matches, inform the use and stop. **Do not proceed if you're unsure of which plan the user wants.**
 - Apply project-specific instructions for saved plan execution; those take precedence over conflicting instructions presented here.
 
 Notes:
@@ -39,6 +39,7 @@ Follow these steps in order:
 1. **Prepare the execution context.**
    - Read `PLAN.md` and identify its goals, requirements, constraints, and acceptance criteria.
    - Read `TODO.md` to map dependencies between work items and identify useful context recorded in one item that may be needed for another.
+   - Prepare files referenced by the plan: download them and do any reusable preprocessing. Save them to `.plans/{plan-slug}/assets/` and point relevant subagents to them.
 
 2. **Select the next item.**
    - Process unchecked execution-checklist items sequentially, from top to bottom.
